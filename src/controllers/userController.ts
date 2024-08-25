@@ -1,37 +1,63 @@
 import { Request, Response } from "express";
-import User, { IUser } from "../models/User";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import User, { IUser } from "../models/User";
 
 // @desc    Register a new user
-// @route   POST /api/users
+// @route   POST /api/users/register
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
+
   try {
-    // Check if the user already exists
-    let user = await User.findOne({ email });
-    if (user) {
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    // Create a new user instance
-    user = new User({
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({
       name,
       email,
-      password: await bcrypt.hash(password, 10), // Hash the password
+      password: hashedPassword,
       role,
     });
 
-    // Save the user to the database
-    await user.save();
-    res.status(201).json(user);
-  } catch (err) {
-    if (err instanceof Error) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    } else {
-      console.error("An unknown error occurred");
-      res.status(500).send("Server Error");
+    await newUser.save();
+    const { password: _, ...userWithoutPassword } = newUser.toObject();
+
+    res.status(201).json(userWithoutPassword);
+  } catch (error) {
+    console.error(
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
+    res.status(500).send("Server Error");
+  }
+};
+
+// @desc    Log in as a user
+// @route   POST /api/users/login
+export const loginUser = async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
+
+    const token = jwt.sign(
+      { userId: user.id, role: user.role },
+      process.env.JWT_SECRET as string,
+      { expiresIn: "1h" }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    console.error(
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
+    res.status(500).send("Server Error");
   }
 };
 
@@ -39,10 +65,13 @@ export const createUser = async (req: Request, res: Response) => {
 // @route   GET /api/users
 export const getUsers = async (req: Request, res: Response) => {
   try {
-    const users = await User.find();
+    const users = await User.find().select("-password");
     res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ message: "Server Error" });
+  } catch (error) {
+    console.error(
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
+    res.status(500).send("Server Error");
   }
 };
 
@@ -50,12 +79,17 @@ export const getUsers = async (req: Request, res: Response) => {
 // @route   GET /api/users/:id
 export const getUserById = async (req: Request, res: Response) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById(req.params.id).select("-password");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
     res.status(200).json(user);
-  } catch (err) {
-    res.status(500).json({ message: "Server Error" });
+  } catch (error) {
+    console.error(
+      error instanceof Error ? error.message : "Unknown error occurred"
+    );
+    res.status(500).send("Server Error");
   }
 };
