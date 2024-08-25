@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Project from "../models/Project";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 import { AuthenticatedRequest } from "../middleware/authMiddleware";
 
 export const getAllProjects = async (
@@ -106,7 +106,7 @@ export const unassignUserFromProject = async (req: Request, res: Response) => {
     if (!project) return res.status(404).json({ message: "Project not found" });
 
     project.assignedUsers = project.assignedUsers.filter(
-      (user) => user.id.toString() !== userId
+      (user: IUser) => user._id.toString() !== userId
     );
     await project.save();
 
