@@ -3,7 +3,7 @@ import { AuthenticatedRequest } from "./authMiddleware";
 
 export const authorizeRoles = (...roles: string[]) => {
   return (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log("User in authorizeRoles:", req.user);
+    //TODO User is already existing, no need for this
     if (!req.user) {
       return res.status(401).json({
         message: "Unauthorized: No user information found",

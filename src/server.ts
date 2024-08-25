@@ -16,6 +16,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use("/api/users", require("./routes/authRoutes").default);
+app.use("/api/projects", require("./routes/projectRoutes").default);
 
 const PORT = process.env.PORT || 5000;
 
