@@ -1,8 +1,11 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-interface AuthenticatedRequest extends Request {
-  user?: any;
+export interface AuthenticatedRequest extends Request {
+  user?: {
+    userId: string;
+    role: string;
+  };
 }
 
 export const authMiddleware = (
@@ -18,7 +21,7 @@ export const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as any;
-    req.user = decoded.user;
+    req.user = decoded; // Set the user property on the request object
     next();
   } catch (err) {
     res.status(401).json({ message: "Token is not valid" });

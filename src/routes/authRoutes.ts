@@ -4,8 +4,9 @@ import {
   getUserById,
   getUsers,
   loginUser,
-} from "../controllers/userController";
+} from "../controllers/authController";
 import { authMiddleware } from "../middleware/authMiddleware";
+import { authorizeRoles } from "../middleware/authorizeRoles";
 
 const router = Router();
 
@@ -19,10 +20,10 @@ router.post("/login", loginUser);
 
 // @route   GET /api/users
 // @desc    Get all users
-router.get("/", authMiddleware, getUsers);
+router.get("/", authMiddleware, authorizeRoles("PM"), getUsers);
 
 // @route   GET /api/users/:id
 // @desc    Get user by ID
-router.get("/:id", authMiddleware, getUserById);
+router.get("/:id", authMiddleware, authorizeRoles("PM"), getUserById);
 
 export default router;
