@@ -1,24 +1,24 @@
 {
   "info": {
     "_postman_id": "12345678-abcd-1234-efgh-1234567890ab",
-    "name": "User API",
+    "name": "User, Project, and Task Management API",
+    "description": "Postman Collection for User, Project, and Task Management API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
     {
-      "name": "Register User",
+      "name": "User Registration",
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"name\": \"John Doe\",\n\t\"email\": \"john@example.com\",\n\t\"password\": \"password123\",\n\t\"role\": \"Dev\"\n}"
+          "raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\",\n    \"role\": \"PM\"\n}"
         },
         "url": {
           "raw": "http://localhost:5000/api/users/register",
@@ -31,19 +31,18 @@
       "response": []
     },
     {
-      "name": "Login User",
+      "name": "User Login",
       "request": {
         "method": "POST",
         "header": [
           {
             "key": "Content-Type",
-            "value": "application/json",
-            "type": "text"
+            "value": "application/json"
           }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"email\": \"john@example.com\",\n\t\"password\": \"password123\"\n}"
+          "raw": "{\n    \"email\": \"john.doe@example.com\",\n    \"password\": \"password123\"\n}"
         },
         "url": {
           "raw": "http://localhost:5000/api/users/login",
@@ -62,8 +61,7 @@
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}",
-            "type": "text"
+            "value": "Bearer {{token}}"
           }
         ],
         "url": {
@@ -77,28 +75,241 @@
       "response": []
     },
     {
-      "name": "Get User by ID",
+      "name": "Get User By ID",
       "request": {
         "method": "GET",
         "header": [
           {
             "key": "Authorization",
-            "value": "Bearer {{token}}",
-            "type": "text"
+            "value": "Bearer {{token}}"
           }
         ],
         "url": {
-          "raw": "http://localhost:5000/api/users/:id",
+          "raw": "http://localhost:5000/api/users/{{id}}",
           "protocol": "http",
           "host": ["localhost"],
           "port": "5000",
-          "path": ["api", "users", ":id"],
-          "variable": [
-            {
-              "key": "id",
-              "value": "1234567890abcdef12345678"
-            }
-          ]
+          "path": ["api", "users", "{{id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Add Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"New Project\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get All Projects",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/projects",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Project",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/projects/delete/{{id}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", "delete", "{{id}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Assign User to Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userId\": \"60d0fe4f5311236168a109ca\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects/{{projectId}}/assign-user",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", "{{projectId}}", "assign-user"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Unassign User from Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"userId\": \"60d0fe4f5311236168a109ca\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects/{{projectId}}/unassign-user",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", "{{projectId}}", "unassign-user"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Task",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"name\": \"New Task\",\n    \"assignedUserId\": \"60d0fe4f5311236168a109ca\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/projects/{{projectId}}/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", "{{projectId}}", "tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Tasks By Project",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/projects/{{projectId}}/tasks",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "projects", "{{projectId}}", "tasks"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Task Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"status\": \"In Progress\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/tasks/{{taskId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks", "{{taskId}}"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Task",
+      "request": {
+        "method": "DELETE",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}"
+          }
+        ],
+        "url": {
+          "raw": "http://localhost:5000/api/tasks/{{taskId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "5000",
+          "path": ["api", "tasks", "{{taskId}}"]
         }
       },
       "response": []

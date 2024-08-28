@@ -3,8 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User, { IUser } from "../models/User";
 
-// @desc    Register a new user
-// @route   POST /api/users/register
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
 
@@ -35,8 +33,6 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-// @desc    Log in as a user
-// @route   POST /api/users/login
 export const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
@@ -61,8 +57,6 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// @desc    Get all users
-// @route   GET /api/users
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const users = await User.find().select("-password");
@@ -75,8 +69,6 @@ export const getUsers = async (req: Request, res: Response) => {
   }
 };
 
-// @desc    Get user by ID
-// @route   GET /api/users/:id
 export const getUserById = async (req: Request, res: Response) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
