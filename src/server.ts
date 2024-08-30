@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerOptions from "./config/swaggerConfig";
 import swaggerUi from "swagger-ui-express";
+import cors from "cors";
 
 // Load environment variables
 dotenv.config();
@@ -13,6 +14,9 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+// Enable CORS for all routes
+app.use(cors());
 
 // Swagger setup
 const swaggerSpec = swaggerJSDoc(swaggerOptions);

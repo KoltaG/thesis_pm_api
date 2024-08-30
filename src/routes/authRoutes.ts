@@ -82,11 +82,31 @@ router.post("/register", createUser);
  *                 token:
  *                   type: string
  *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "612b1f84e51c2c1a5f5d8f9b"
+ *                     name:
+ *                       type: string
+ *                       example: "John Doe"
+ *                     email:
+ *                       type: string
+ *                       example: "john.doe@example.com"
+ *                     date:
+ *                       type: string
+ *                       format: date-time
+ *                       example: "2023-08-27T14:12:00.000Z"
+ *                     role:
+ *                       type: string
+ *                       example: "Dev"
  *       400:
  *         description: Invalid credentials
  *       500:
  *         description: Server error
  */
+
 router.post("/login", loginUser);
 
 /**

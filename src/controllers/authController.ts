@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import User, { IUser } from "../models/User";
+import User from "../models/User";
 
 export const createUser = async (req: Request, res: Response) => {
   const { name, email, password, role } = req.body;
@@ -48,7 +48,8 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    res.json({ token });
+    const { _id, name, email: userEmail, date, role } = user;
+    res.json({ token, user: { _id, name, email: userEmail, date, role } });
   } catch (error) {
     console.error(
       error instanceof Error ? error.message : "Unknown error occurred"
