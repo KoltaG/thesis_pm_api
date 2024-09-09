@@ -22,10 +22,15 @@ export const getAllProjects = async (
 
     let projects;
 
+    // Find all projects for a Project Manager
     if (user.role === "PM") {
-      projects = await Project.find();
-    } else if (user.role === "Dev") {
-      projects = await Project.find({ assignedUsers: user._id });
+      projects = await Project.find().populate("tasks");
+    }
+    // Find only assigned projects for Developers
+    else if (user.role === "Dev") {
+      projects = await Project.find({ assignedUsers: user._id }).populate(
+        "tasks"
+      );
     } else {
       return res.status(403).json({
         message: "Forbidden: You do not have access to this resource",

@@ -1,10 +1,11 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 import { IUser } from "./User";
 import { IProject } from "./Project";
 
 export type TaskStatus = "To Do" | "In Progress" | "Done";
 
 export interface ITask extends Document {
+  _id: Types.ObjectId;
   name: string;
   projectId: IProject["_id"];
   assignedUserId?: IUser["_id"];

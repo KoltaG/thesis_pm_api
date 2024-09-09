@@ -19,6 +19,10 @@ export const createTask = async (req: Request, res: Response) => {
 
     await task.save();
 
+    // Push task's id inot the project's tasks array
+    project.tasks.push(task._id);
+    await project.save();
+
     res.status(201).json(task);
   } catch (error) {
     console.error(
