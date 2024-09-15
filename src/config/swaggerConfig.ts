@@ -61,7 +61,7 @@ const swaggerDefinition: SwaggerDefinition = {
             type: "string",
             example: "New Project",
           },
-          assignedUsers: {
+          assignedUserIds: {
             type: "array",
             items: {
               type: "string",
