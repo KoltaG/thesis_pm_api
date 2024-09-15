@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createUser,
+  deleteUser,
   getUserById,
   getUsers,
   loginUser,
@@ -163,5 +164,29 @@ router.get("/", authMiddleware, authorizeRoles("PM"), getUsers);
  *         description: Server error
  */
 router.get("/:id", authMiddleware, authorizeRoles("PM"), getUserById);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   delete:
+ *     summary: Delete a user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The user ID
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server Error
+ */
+
+router.delete("/:id", authMiddleware, authorizeRoles("PM"), deleteUser);
 
 export default router;

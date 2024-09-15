@@ -81,6 +81,10 @@ const swaggerDefinition: SwaggerDefinition = {
             type: "string",
             example: "New Task",
           },
+          description: {
+            type: "string",
+            example: "Task description",
+          },
           projectId: {
             type: "string",
             example: "60d0fe4f5311236168a109ca",

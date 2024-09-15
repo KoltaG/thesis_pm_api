@@ -7,6 +7,7 @@ export type TaskStatus = "To Do" | "In Progress" | "Done";
 export interface ITask extends Document {
   _id: Types.ObjectId;
   name: string;
+  description?: string;
   projectId: IProject["_id"];
   assignedUserId?: IUser["_id"];
   status: TaskStatus;
@@ -14,6 +15,7 @@ export interface ITask extends Document {
 
 const TaskSchema: Schema = new mongoose.Schema({
   name: { type: String, required: true },
+  description: { type: String, maxlength: 750 },
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Project",

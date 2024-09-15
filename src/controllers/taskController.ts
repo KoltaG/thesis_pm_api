@@ -4,7 +4,7 @@ import Project from "../models/Project";
 
 export const createTask = async (req: Request, res: Response) => {
   const { projectId } = req.params;
-  const { name, assignedUserId } = req.body;
+  const { name, description, assignedUserId } = req.body;
 
   try {
     const project = await Project.findById(projectId);
@@ -12,6 +12,7 @@ export const createTask = async (req: Request, res: Response) => {
 
     const task = new Task({
       name,
+      description,
       projectId,
       assignedUserId,
       status: "To Do",

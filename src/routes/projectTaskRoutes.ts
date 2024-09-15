@@ -16,10 +16,10 @@ const router = Router();
  *     parameters:
  *       - in: path
  *         name: projectId
+ *         description: The ID of the project
  *         schema:
  *           type: string
  *         required: true
- *         description: The ID of the project
  *     requestBody:
  *       description: Task object that needs to be created
  *       required: true
@@ -30,10 +30,20 @@ const router = Router();
  *             properties:
  *               name:
  *                 type: string
+ *                 description: The name of the task
  *                 example: "New Task"
+ *               description:
+ *                 type: string
+ *                 description: A brief description of the task, max length 500 characters
+ *                 example: "This task involves setting up the project environment."
  *               assignedUserId:
  *                 type: string
+ *                 description: The ID of the user assigned to the task
  *                 example: "60d0fe4f5311236168a109ca"
+ *               status:
+ *                 type: string
+ *                 description: The current status of the task (e.g., 'To Do', 'In Progress', 'Done')
+ *                 example: "To Do"
  *     responses:
  *       201:
  *         description: Task created successfully
