@@ -48,8 +48,8 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: "1h" }
     );
 
-    const { _id, name, email: userEmail, date, role } = user;
-    res.json({ token, user: { _id, name, email: userEmail, date, role } });
+    const { _id, name, email: userEmail, role } = user;
+    res.json({ token, user: { _id, name, email: userEmail, role } });
   } catch (error) {
     console.error(
       error instanceof Error ? error.message : "Unknown error occurred"

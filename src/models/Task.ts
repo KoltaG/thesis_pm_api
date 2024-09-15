@@ -11,22 +11,27 @@ export interface ITask extends Document {
   projectId: IProject["_id"];
   assignedUserId?: IUser["_id"];
   status: TaskStatus;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const TaskSchema: Schema = new mongoose.Schema({
-  name: { type: String, required: true },
-  description: { type: String, maxlength: 750 },
-  projectId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Project",
-    required: true,
+const TaskSchema: Schema = new mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    description: { type: String, maxlength: 750 },
+    projectId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Project",
+      required: true,
+    },
+    assignedUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    status: {
+      type: String,
+      enum: ["To Do", "In Progress", "Done"],
+      default: "To Do",
+    },
   },
-  assignedUserId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-  status: {
-    type: String,
-    enum: ["To Do", "In Progress", "Done"],
-    default: "To Do",
-  },
-});
+  { timestamps: true }
+);
 
 export default mongoose.model<ITask>("Task", TaskSchema);

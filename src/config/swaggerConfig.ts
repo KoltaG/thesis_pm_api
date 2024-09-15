@@ -43,7 +43,12 @@ const swaggerDefinition: SwaggerDefinition = {
             enum: ["PM", "Dev"],
             example: "PM",
           },
-          date: {
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-07-19T16:47:30.507Z",
+          },
+          updatedAt: {
             type: "string",
             format: "date-time",
             example: "2023-07-19T16:47:30.507Z",
@@ -67,6 +72,16 @@ const swaggerDefinition: SwaggerDefinition = {
               type: "string",
               example: "60d0fe4f5311236168a109ca",
             },
+          },
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-07-19T16:47:30.507Z",
+          },
+          updatedAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-07-19T16:47:30.507Z",
           },
         },
       },
@@ -97,6 +112,16 @@ const swaggerDefinition: SwaggerDefinition = {
             type: "string",
             enum: ["To Do", "In Progress", "Done"],
             example: "To Do",
+          },
+          createdAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-07-19T16:47:30.507Z",
+          },
+          updatedAt: {
+            type: "string",
+            format: "date-time",
+            example: "2023-07-19T16:47:30.507Z",
           },
         },
       },

@@ -8,7 +8,6 @@ import {
   unassignUserFromProject,
 } from "../controllers/projectController";
 import { authorizeRoles } from "../middleware/authorizeRoles";
-import { createTask, getTasksByProject } from "../controllers/taskController";
 
 const router = Router();
 

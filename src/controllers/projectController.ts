@@ -25,20 +25,53 @@ export const getAllProjects = async (
 
     // Find all projects for a Project Manager
     if (user.role === "PM") {
-      projects = await Project.find().populate("tasks");
+      projects = await Project.find().populate({
+        path: "tasks",
+        populate: {
+          path: "assignedUserId",
+          model: "User", // Populate the entire User object
+          select: "-password -__v", // Exclude fields you don't want to include
+        },
+      });
     }
     // Find only assigned projects for Developers
     else if (user.role === "Dev") {
-      projects = await Project.find({ assignedUserIds: user._id }).populate(
-        "tasks"
-      );
+      projects = await Project.find({ assignedUserIds: user._id }).populate({
+        path: "tasks",
+        populate: {
+          path: "assignedUserId",
+          model: "User", // Populate the entire User object
+          select: "-password -__v", // Exclude fields you don't want to include
+        },
+      });
     } else {
       return res.status(403).json({
         message: "Forbidden: You do not have access to this resource",
       });
     }
 
-    res.status(200).json(projects);
+    // Convert the tasks to rename assignedUserId to assignedUser
+    const renamedProjects = projects.map((project) => {
+      // Convert project to plain object
+      const projectObject = project.toObject();
+
+      // Explicitly define the tasks as an array of objects rather than ObjectIds
+      projectObject.tasks = projectObject.tasks.map((task: any) => {
+        if (task.assignedUserId && typeof task.assignedUserId === "object") {
+          // Destructure to rename assignedUserId
+          const { assignedUserId, ...taskData } = task;
+          return {
+            ...taskData,
+            assignedUser: assignedUserId, // Rename to assignedUser
+          };
+        }
+        return task; // Return task as-is if assignedUserId is not populated correctly
+      });
+
+      return projectObject;
+    });
+
+    res.status(200).json(renamedProjects);
   } catch (error) {
     console.error(
       error instanceof Error ? error.message : "Unknown error occurred"
