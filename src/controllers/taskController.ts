@@ -20,11 +20,23 @@ export const createTask = async (req: Request, res: Response) => {
 
     await task.save();
 
-    // Push task's id inot the project's tasks array
     project.tasks.push(task._id);
     await project.save();
 
-    res.status(201).json(task);
+    // Populate the assigned user information in the task
+    const populatedTask = await task.populate({
+      path: "assignedUserId",
+      model: "User",
+      select: "name email",
+    });
+
+    // Create a new task object with assignedUser field
+    const taskObject = {
+      ...populatedTask.toObject(),
+      assignedUser: populatedTask.assignedUserId, // Rename to assignedUser
+    };
+
+    res.status(201).json(taskObject);
   } catch (error) {
     console.error(
       error instanceof Error ? error.message : "Unknown error occurred"
@@ -32,7 +44,6 @@ export const createTask = async (req: Request, res: Response) => {
     res.status(500).send("Server Error");
   }
 };
-
 export const getTasksByProject = async (req: Request, res: Response) => {
   const { projectId } = req.params;
 
