@@ -132,7 +132,7 @@ router.post("/login", loginUser);
  *       500:
  *         description: Server error
  */
-router.get("/", authMiddleware, authorizeRoles("PM"), getUsers);
+router.get("/", authMiddleware, authorizeRoles("PM", "Dev"), getUsers);
 
 /**
  * @swagger
