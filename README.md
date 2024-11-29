@@ -1,3 +1,13 @@
+# Express.js + MongoDB Project Setup Guide
+
+## Prerequisites
+
+Make sure you have the following installed on your system:
+
+- [Node.js](https://nodejs.org/) (v20+)
+- [Yarn](https://yarnpkg.com/)
+- [Docker](https://www.docker.com/) or [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
 ## Steps to Set Up and Run the Backend locally
 
 1. Clone the repository and navigate into the project directory:
